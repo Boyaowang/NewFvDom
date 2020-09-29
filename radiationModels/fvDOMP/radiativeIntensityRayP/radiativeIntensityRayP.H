@@ -22,18 +22,19 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::radiationModels::radiativeIntensityRay
+    Foam::radiationModels::radiativeIntensityRayP
+
 
 Description
     Radiation intensity for a ray in a given direction
 
 SourceFiles
-    radiativeIntensityRay.C
+    radiativeIntensityRayP.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef radiativeIntensityRay_H
-#define radiativeIntensityRay_H
+#ifndef radiativeIntensityRayP_H
+#define radiativeIntensityRayP_H
 
 #include "absorptionEmissionModel.H"
 #include "blackBodyEmission.H"
@@ -47,13 +48,13 @@ namespace radiationModels
 {
 
 // Forward declaration of classes
-class fvDOM;
+class fvDOMP;
 
 /*---------------------------------------------------------------------------*\
-                    Class radiativeIntensityRay Declaration
+                    Class radiativeIntensityRayP Declaration
 \*---------------------------------------------------------------------------*/
 
-class radiativeIntensityRay
+class radiativeIntensityRayP
 {
 public:
 
@@ -64,8 +65,8 @@ private:
 
     // Private Data
 
-        //- Reference to the owner fvDOM object
-        const fvDOM& dom_;
+        //- Reference to the owner fvDOMP object
+        const fvDOMP& dom_;
 
         //- Reference to the mesh
         const fvMesh& mesh_;
@@ -121,9 +122,9 @@ public:
     // Constructors
 
         //- Construct form components
-        radiativeIntensityRay
+        radiativeIntensityRayP
         (
-            const fvDOM& dom,
+            const fvDOMP& dom,
             const fvMesh& mesh,
             const scalar phi,
             const scalar theta,
@@ -136,11 +137,11 @@ public:
         );
 
         //- Disallow default bitwise copy construction
-        radiativeIntensityRay(const radiativeIntensityRay&) = delete;
+        radiativeIntensityRayP(const radiativeIntensityRayP&) = delete;
 
 
     //- Destructor
-    ~radiativeIntensityRay();
+    ~radiativeIntensityRayP();
 
 
     // Member Functions
@@ -212,7 +213,7 @@ public:
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const radiativeIntensityRay&) = delete;
+        void operator=(const radiativeIntensityRayP&) = delete;
 };
 
 
@@ -223,7 +224,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "radiativeIntensityRayI.H"
+#include "radiativeIntensityRayPI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

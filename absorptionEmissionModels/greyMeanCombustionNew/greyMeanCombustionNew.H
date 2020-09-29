@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::radiationModels::absorptionEmission::greyMeanCombustion
+    Foam::radiationModels::absorptionEmission::greyMeanCombustionNew
 
 Description
-    greyMeanCombustion radiation absorption and emission coefficients for
+    greyMeanCombustionNew radiation absorption and emission coefficients for
     continuous phase. Exactly as greyMean, but with additional effects of the
     combustion heat release rate included.
 
@@ -33,12 +33,12 @@ See also
     Foam::radiationModels::absorptionEmissionModels::greyMean
 
 SourceFiles
-    greyMeanCombustion.C
+    greyMeanCombustionNew.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef greyMeanCombustion_H
-#define greyMeanCombustion_H
+#ifndef greyMeanCombustionNew_H
+#define greyMeanCombustionNew_H
 
 #include "greyMean.H"
 
@@ -52,10 +52,10 @@ namespace absorptionEmissionModels
 {
 
 /*---------------------------------------------------------------------------*\
-                        Class greyMeanCombustion Declaration
+                        Class greyMeanCombustionNew Declaration
 \*---------------------------------------------------------------------------*/
 
-class greyMeanCombustion
+class greyMeanCombustionNew
 :
     public greyMean
 {
@@ -66,27 +66,34 @@ private:
         //- Emission constant coefficient
         const scalar EhrrCoeff_;
 
-
 public:
 
     //- Runtime type information
-    TypeName("greyMeanCombustion");
+    TypeName("greyMeanCombustionNew");
 
 
     // Constructors
 
         //- Construct from components
-        greyMeanCombustion(const dictionary& dict, const fvMesh& mesh);
+        greyMeanCombustionNew(const dictionary& dict, const fvMesh& mesh);
 
 
     //- Destructor
-    virtual ~greyMeanCombustion();
+    virtual ~greyMeanCombustionNew();
 
 
     // Member Functions
-
+    
         //- Emission contribution for continuous phase
-        tmp<volScalarField> ECont(const label bandI = 0) const;
+            tmp<volScalarField> ECont(const label bandI = 0) const;
+            
+        //- Correct rays
+            void correct
+            (
+                volScalarField& a,
+                PtrList<volScalarField>& aj
+            ) const;
+
 };
 
 

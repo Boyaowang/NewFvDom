@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "P1.H"
+#include "P1P.H"
 #include "fvmLaplacian.H"
 #include "fvmSup.H"
 #include "absorptionEmissionModel.H"
@@ -39,15 +39,15 @@ namespace Foam
 {
 namespace radiationModels
 {
-    defineTypeNameAndDebug(P1, 0);
-    addToRadiationRunTimeSelectionTables(P1);
+    defineTypeNameAndDebug(P1P, 0);
+    addToRadiationRunTimeSelectionTables(P1P);
 }
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::radiationModels::P1::P1(const volScalarField& T)
+Foam::radiationModels::P1P::P1P(const volScalarField& T)
 :
     radiationModel(typeName, T),
     G_
@@ -109,7 +109,46 @@ Foam::radiationModels::P1::P1(const volScalarField& T)
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimMass/dimLength/pow3(dimTime), 0)
+    ),
+    ap_
+    (
+        IOobject
+        (
+            "ap",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimless/dimLength, 0)
+    ),
+    Ep_
+    (
+        IOobject
+        (
+            "Ep",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
             IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimMass/dimLength/pow3(dimTime), 0)
+    ),
+    GLST1_
+    (
+        IOobject
+        (
+            "GLST1",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar(dimMass/dimLength/pow3(dimTime), 0)
@@ -117,7 +156,7 @@ Foam::radiationModels::P1::P1(const volScalarField& T)
 {}
 
 
-Foam::radiationModels::P1::P1(const dictionary& dict, const volScalarField& T)
+Foam::radiationModels::P1P::P1P(const dictionary& dict, const volScalarField& T)
 :
     radiationModel(typeName, dict, T),
     G_
@@ -179,7 +218,46 @@ Foam::radiationModels::P1::P1(const dictionary& dict, const volScalarField& T)
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimMass/dimLength/pow3(dimTime), 0)
+    ),
+    ap_
+    (
+        IOobject
+        (
+            "ap",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimless/dimLength, 0)
+    ),
+    Ep_
+    (
+        IOobject
+        (
+            "Ep",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
             IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimMass/dimLength/pow3(dimTime), 0)
+    ),
+    GLST1_
+    (
+        IOobject
+        (
+            "GLST1",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar(dimMass/dimLength/pow3(dimTime), 0)
@@ -189,13 +267,13 @@ Foam::radiationModels::P1::P1(const dictionary& dict, const volScalarField& T)
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::radiationModels::P1::~P1()
+Foam::radiationModels::P1P::~P1P()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-bool Foam::radiationModels::P1::read()
+bool Foam::radiationModels::P1P::read()
 {
     if (radiationModel::read())
     {
@@ -210,7 +288,7 @@ bool Foam::radiationModels::P1::read()
 }
 
 
-void Foam::radiationModels::P1::calculate()
+void Foam::radiationModels::P1P::calculate()
 {
     a_ = absorptionEmission_->a();
     e_ = absorptionEmission_->e();
@@ -232,6 +310,10 @@ void Foam::radiationModels::P1::calculate()
         ),
         1.0/(3.0*a_ + sigmaEff + a0)
     );
+    
+    ap_ = 1.0/gamma;
+    
+    GLST1_ = e_*physicoChemical::sigma*pow4(T_);
 
     // Solve G transport equation
     solve
@@ -257,7 +339,7 @@ void Foam::radiationModels::P1::calculate()
 }
 
 
-Foam::tmp<Foam::volScalarField> Foam::radiationModels::P1::Rp() const
+Foam::tmp<Foam::volScalarField> Foam::radiationModels::P1P::Rp() const
 {
     return volScalarField::New
     (
@@ -268,7 +350,7 @@ Foam::tmp<Foam::volScalarField> Foam::radiationModels::P1::Rp() const
 
 
 Foam::tmp<Foam::DimensionedField<Foam::scalar, Foam::volMesh>>
-Foam::radiationModels::P1::Ru() const
+Foam::radiationModels::P1P::Ru() const
 {
     const volScalarField::Internal& G =
         G_();

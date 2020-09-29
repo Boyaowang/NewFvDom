@@ -22,12 +22,12 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::greyDiffusiveRadiationMixedFvPatchScalarField
+    Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 
 Description
     This boundary condition provides a grey-diffuse condition for radiation
     intensity, \c I, for use with the finite-volume discrete-ordinates model
-    (fvDOM), in which the radiation temperature is retrieved from the
+    (fvDOMP), in which the radiation temperature is retrieved from the
     temperature field boundary condition.
 
 Usage
@@ -51,16 +51,16 @@ Usage
 See also
     Foam::radiationCoupledBase
     Foam::radiationModel
-    Foam::radiationModels::fvDOM
+    Foam::radiationModels::fvDOMP
     Foam::mixedFvPatchField
 
 SourceFiles
-    greyDiffusiveRadiationMixedFvPatchScalarField.C
+    greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef greyDiffusiveRadiationMixedFvPatchScalarField_H
-#define greyDiffusiveRadiationMixedFvPatchScalarField_H
+#ifndef greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP_H
+#define greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP_H
 
 #include "mixedFvPatchFields.H"
 #include "radiationCoupledBase.H"
@@ -71,10 +71,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-        Class greyDiffusiveRadiationMixedFvPatchScalarField Declaration
+        Class greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP Declaration
 \*---------------------------------------------------------------------------*/
 
-class greyDiffusiveRadiationMixedFvPatchScalarField
+class greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 :
     public mixedFvPatchScalarField,
     public radiationCoupledBase
@@ -88,20 +88,20 @@ class greyDiffusiveRadiationMixedFvPatchScalarField
 public:
 
     //- Runtime type information
-    TypeName("greyDiffusiveRadiation");
+    TypeName("greyDiffusiveRadiationFvDOMP");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        greyDiffusiveRadiationMixedFvPatchScalarField
+        greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        greyDiffusiveRadiationMixedFvPatchScalarField
+        greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
         (
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
@@ -109,19 +109,19 @@ public:
         );
 
         //- Construct by mapping given a
-        //  greyDiffusiveRadiationMixedFvPatchScalarField onto a new patch
-        greyDiffusiveRadiationMixedFvPatchScalarField
+        //  greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP onto a new patch
+        greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
         (
-            const greyDiffusiveRadiationMixedFvPatchScalarField&,
+            const greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP&,
             const fvPatch&,
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Copy constructor
-        greyDiffusiveRadiationMixedFvPatchScalarField
+        greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
         (
-            const greyDiffusiveRadiationMixedFvPatchScalarField&
+            const greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP&
         );
 
         //- Construct and return a clone
@@ -129,14 +129,14 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new greyDiffusiveRadiationMixedFvPatchScalarField(*this)
+                new greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP(*this)
             );
         }
 
         //- Copy constructor setting internal field reference
-        greyDiffusiveRadiationMixedFvPatchScalarField
+        greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
         (
-            const greyDiffusiveRadiationMixedFvPatchScalarField&,
+            const greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP&,
             const DimensionedField<scalar, volMesh>&
         );
 
@@ -148,7 +148,7 @@ public:
         {
             return tmp<fvPatchScalarField>
             (
-                new greyDiffusiveRadiationMixedFvPatchScalarField(*this, iF)
+                new greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP(*this, iF)
             );
         }
 

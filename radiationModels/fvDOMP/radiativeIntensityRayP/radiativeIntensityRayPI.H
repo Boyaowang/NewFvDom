@@ -24,91 +24,91 @@ License
 \*---------------------------------------------------------------------------*/
 
 inline const Foam::volScalarField&
-Foam::radiationModels::radiativeIntensityRay::I() const
+Foam::radiationModels::radiativeIntensityRayP::I() const
 {
     return I_;
 }
 
 
 inline const Foam::volScalarField&
-Foam::radiationModels::radiativeIntensityRay::qr() const
+Foam::radiationModels::radiativeIntensityRayP::qr() const
 {
     return qr_;
 }
 
 
-inline Foam::volScalarField& Foam::radiationModels::radiativeIntensityRay::qr()
+inline Foam::volScalarField& Foam::radiationModels::radiativeIntensityRayP::qr()
 {
     return qr_;
 }
 
 inline const Foam::volScalarField& Foam::radiationModels::
-radiativeIntensityRay::qin() const
+radiativeIntensityRayP::qin() const
 {
     return qin_;
 }
 
 
-inline Foam::volScalarField& Foam::radiationModels::radiativeIntensityRay::qin()
+inline Foam::volScalarField& Foam::radiationModels::radiativeIntensityRayP::qin()
 {
     return qin_;
 }
 
 
 inline const Foam::volScalarField& Foam::radiationModels::
-radiativeIntensityRay::qem() const
+radiativeIntensityRayP::qem() const
 {
     return qem_;
 }
 
 
-inline Foam::volScalarField& Foam::radiationModels::radiativeIntensityRay::qem()
+inline Foam::volScalarField& Foam::radiationModels::radiativeIntensityRayP::qem()
 {
     return qem_;
 }
 
 
 inline const Foam::vector&
-Foam::radiationModels::radiativeIntensityRay::d() const
+Foam::radiationModels::radiativeIntensityRayP::d() const
 {
     return d_;
 }
 
 
 inline const Foam::vector&
-Foam::radiationModels::radiativeIntensityRay::dAve() const
+Foam::radiationModels::radiativeIntensityRayP::dAve() const
 {
     return dAve_;
 }
 
 
 inline Foam::scalar
-Foam::radiationModels::radiativeIntensityRay::nLambda() const
+Foam::radiationModels::radiativeIntensityRayP::nLambda() const
 {
     return nLambda_;
 }
 
 
-inline Foam::scalar Foam::radiationModels::radiativeIntensityRay::phi() const
+inline Foam::scalar Foam::radiationModels::radiativeIntensityRayP::phi() const
 {
     return phi_;
 }
 
 
-inline Foam::scalar Foam::radiationModels::radiativeIntensityRay::theta() const
+inline Foam::scalar Foam::radiationModels::radiativeIntensityRayP::theta() const
 {
     return theta_;
 }
 
 
-inline Foam::scalar Foam::radiationModels::radiativeIntensityRay::omega() const
+inline Foam::scalar Foam::radiationModels::radiativeIntensityRayP::omega() const
 {
     return omega_;
 }
 
 
 inline const Foam::volScalarField&
-Foam::radiationModels::radiativeIntensityRay::ILambda
+Foam::radiationModels::radiativeIntensityRayP::ILambda
 (
     const label lambdaI
 ) const

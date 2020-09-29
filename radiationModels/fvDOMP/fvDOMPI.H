@@ -23,15 +23,15 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-inline const Foam::radiationModels::radiativeIntensityRay&
-Foam::radiationModels::fvDOM::IRay(const label rayI) const
+inline const Foam::radiationModels::radiativeIntensityRayP&
+Foam::radiationModels::fvDOMP::IRay(const label rayI) const
 {
     return  IRay_[rayI];
 }
 
 
 inline const Foam::volScalarField&
-Foam::radiationModels::fvDOM::IRayLambda
+Foam::radiationModels::fvDOMP::IRayLambda
 (
     const label rayI,
     const label lambdaI
@@ -41,37 +41,37 @@ Foam::radiationModels::fvDOM::IRayLambda
 }
 
 
-inline Foam::label Foam::radiationModels::fvDOM::nTheta() const
+inline Foam::label Foam::radiationModels::fvDOMP::nTheta() const
 {
     return nTheta_;
 }
 
 
-inline Foam::label Foam::radiationModels::fvDOM::nPhi() const
+inline Foam::label Foam::radiationModels::fvDOMP::nPhi() const
 {
     return nPhi_;
 }
 
 
-inline Foam::label Foam::radiationModels::fvDOM::nRay() const
+inline Foam::label Foam::radiationModels::fvDOMP::nRay() const
 {
     return nRay_;
 }
 
 
-inline Foam::label Foam::radiationModels::fvDOM::nLambda() const
+inline Foam::label Foam::radiationModels::fvDOMP::nLambda() const
 {
     return nLambda_;
 }
 
 
-inline const Foam::volScalarField& Foam::radiationModels::fvDOM::a() const
+inline const Foam::volScalarField& Foam::radiationModels::fvDOMP::a() const
 {
     return a_;
 }
 
 
-inline const Foam::volScalarField& Foam::radiationModels::fvDOM::aLambda
+inline const Foam::volScalarField& Foam::radiationModels::fvDOMP::aLambda
 (
     const label lambdaI
 ) const
@@ -80,37 +80,37 @@ inline const Foam::volScalarField& Foam::radiationModels::fvDOM::aLambda
 }
 
 
-inline const Foam::volScalarField& Foam::radiationModels::fvDOM::G() const
+inline const Foam::volScalarField& Foam::radiationModels::fvDOMP::G() const
 {
     return G_;
 }
 
 
-inline const Foam::volScalarField& Foam::radiationModels::fvDOM::qr() const
+inline const Foam::volScalarField& Foam::radiationModels::fvDOMP::qr() const
 {
     return qr_;
 }
 
-inline const Foam::volScalarField& Foam::radiationModels::fvDOM::qin() const
+inline const Foam::volScalarField& Foam::radiationModels::fvDOMP::qin() const
 {
     return qin_;
 }
 
 
-inline const Foam::volScalarField& Foam::radiationModels::fvDOM::qem() const
+inline const Foam::volScalarField& Foam::radiationModels::fvDOMP::qem() const
 {
     return qem_;
 }
 
 
 inline const Foam::radiationModels::blackBodyEmission&
-Foam::radiationModels::fvDOM::blackBody() const
+Foam::radiationModels::fvDOMP::blackBody() const
 {
     return blackBody_;
 }
 
 
-inline Foam::scalar Foam::radiationModels::fvDOM::omegaMax() const
+inline Foam::scalar Foam::radiationModels::fvDOMP::omegaMax() const
 {
     return omegaMax_;
 }

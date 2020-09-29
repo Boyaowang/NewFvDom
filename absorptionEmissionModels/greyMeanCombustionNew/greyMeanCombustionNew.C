@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "greyMeanCombustion.H"
+#include "greyMeanCombustionNew.H"
 #include "combustionModel.H"
 #include "addToRunTimeSelectionTable.H"
 
@@ -35,12 +35,12 @@ namespace radiationModels
 {
 namespace absorptionEmissionModels
 {
-    defineTypeNameAndDebug(greyMeanCombustion, 0);
+    defineTypeNameAndDebug(greyMeanCombustionNew, 0);
 
     addToRunTimeSelectionTable
     (
         absorptionEmissionModel,
-        greyMeanCombustion,
+        greyMeanCombustionNew,
         dictionary
     );
 }
@@ -50,8 +50,8 @@ namespace absorptionEmissionModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::radiationModels::absorptionEmissionModels::greyMeanCombustion::
-greyMeanCombustion
+Foam::radiationModels::absorptionEmissionModels::greyMeanCombustionNew::
+greyMeanCombustionNew
 (
     const dictionary& dict,
     const fvMesh& mesh
@@ -64,15 +64,15 @@ greyMeanCombustion
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::radiationModels::absorptionEmissionModels::greyMeanCombustion::
-~greyMeanCombustion()
+Foam::radiationModels::absorptionEmissionModels::greyMeanCombustionNew::
+~greyMeanCombustionNew()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::greyMeanCombustion::ECont
+Foam::radiationModels::absorptionEmissionModels::greyMeanCombustionNew::ECont
 (
     const label bandI
 ) const
@@ -83,6 +83,21 @@ Foam::radiationModels::absorptionEmissionModels::greyMeanCombustion::ECont
     E.ref() += EhrrCoeff_*mesh_.lookupObject<combustionModel>(name).Qdot();
 
     return E;
+}
+
+void Foam::radiationModels::absorptionEmissionModels::greyMeanCombustionNew::correct
+(
+    volScalarField& a,
+    PtrList<volScalarField>& aj
+) const
+{
+   a = this->a();
+   
+   forAll(aj, bandI)
+   {
+       aj[bandI] =  a;
+   }
+
 }
 
 

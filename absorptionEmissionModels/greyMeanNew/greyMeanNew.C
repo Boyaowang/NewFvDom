@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "greyMean.H"
+#include "greyMeanNew.H"
 #include "addToRunTimeSelectionTable.H"
 #include "unitConversion.H"
 #include "extrapolatedCalculatedFvPatchFields.H"
@@ -37,12 +37,12 @@ namespace radiationModels
 {
 namespace absorptionEmissionModels
 {
-    defineTypeNameAndDebug(greyMean, 0);
+    defineTypeNameAndDebug(greyMeanNew, 0);
 
     addToRunTimeSelectionTable
     (
         absorptionEmissionModel,
-        greyMean,
+        greyMeanNew,
         dictionary
     );
 }
@@ -52,7 +52,7 @@ namespace absorptionEmissionModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::radiationModels::absorptionEmissionModels::greyMean::greyMean
+Foam::radiationModels::absorptionEmissionModels::greyMeanNew::greyMeanNew
 (
     const dictionary& dict,
     const fvMesh& mesh,
@@ -168,14 +168,14 @@ Foam::radiationModels::absorptionEmissionModels::greyMean::greyMean
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::radiationModels::absorptionEmissionModels::greyMean::~greyMean()
+Foam::radiationModels::absorptionEmissionModels::greyMeanNew::~greyMeanNew()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::greyMean::aCont
+Foam::radiationModels::absorptionEmissionModels::greyMeanNew::aCont
 (
     const label bandI
 ) const
@@ -252,7 +252,7 @@ Foam::radiationModels::absorptionEmissionModels::greyMean::aCont
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::greyMean::eCont
+Foam::radiationModels::absorptionEmissionModels::greyMeanNew::eCont
 (
     const label bandI
 ) const
@@ -262,7 +262,7 @@ Foam::radiationModels::absorptionEmissionModels::greyMean::eCont
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::greyMean::ECont
+Foam::radiationModels::absorptionEmissionModels::greyMeanNew::ECont
 (
     const label bandI
 ) const
@@ -270,5 +270,19 @@ Foam::radiationModels::absorptionEmissionModels::greyMean::ECont
     return absorptionEmissionModel::ECont(bandI);
 }
 
+void Foam::radiationModels::absorptionEmissionModels::greyMeanNew::correct
+(
+    volScalarField& a,
+    PtrList<volScalarField>& aj
+) const
+{
+   a = this->a();
+   
+   forAll(aj, bandI)
+   {
+       aj[bandI] =  a;
+   }
+
+}
 
 // ************************************************************************* //

@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::radiationModels::fvDOM
+    Foam::radiationModels::fvDOMP
 
 Description
 
@@ -59,14 +59,14 @@ Description
     4*nPhi*nTheta.
 
 SourceFiles
-    fvDOM.C
+    fvDOMP.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef radiation_fvDOM_H
-#define radiation_fvDOM_H
+#ifndef radiation_fvDOMP_H
+#define radiation_fvDOMP_H
 
-#include "radiativeIntensityRay.H"
+#include "radiativeIntensityRayP.H"
 #include "radiationModel.H"
 #include "fvMatrices.H"
 
@@ -78,10 +78,10 @@ namespace radiationModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class fvDOM Declaration
+                           Class fvDOMP Declaration
 \*---------------------------------------------------------------------------*/
 
-class fvDOM
+class fvDOMP
 :
     public radiationModel
 {
@@ -122,7 +122,7 @@ class fvDOM
         blackBodyEmission blackBody_;
 
         //- List of pointers to radiative intensity rays
-        PtrList<radiativeIntensityRay> IRay_;
+        PtrList<radiativeIntensityRayP> IRay_;
 
         //- Convergence tolerance
         scalar tolerance_;
@@ -146,23 +146,23 @@ class fvDOM
 public:
 
     //- Runtime type information
-    TypeName("fvDOM");
+    TypeName("fvDOMP");
 
 
     // Constructors
 
         //- Construct from components
-        fvDOM(const volScalarField& T);
+        fvDOMP(const volScalarField& T);
 
         //- Construct from components
-        fvDOM(const dictionary& dict, const volScalarField& T);
+        fvDOMP(const dictionary& dict, const volScalarField& T);
 
         //- Disallow default bitwise copy construction
-        fvDOM(const fvDOM&) = delete;
+        fvDOMP(const fvDOMP&) = delete;
 
 
     //- Destructor
-    virtual ~fvDOM();
+    virtual ~fvDOMP();
 
 
     // Member Functions
@@ -193,11 +193,13 @@ public:
             //- Source term component (constant)
             virtual tmp<volScalarField::Internal> Ru() const;
 
-
+            //- Const access to wavelength total scatter factor coefficient
+            tmp<volScalarField> sigmaEff() const;
+            
         // Access
 
             //- Ray intensity for rayI
-            inline const radiativeIntensityRay& IRay(const label rayI) const;
+            inline const radiativeIntensityRayP& IRay(const label rayI) const;
 
             //- Ray intensity for rayI and lambda bandwidth
             inline const volScalarField& IRayLambda
@@ -241,18 +243,20 @@ public:
 
             //- Return omegaMax
             inline scalar omegaMax() const;
+            
+            
 
 
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const fvDOM&) = delete;
+        void operator=(const fvDOMP&) = delete;
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "fvDOMI.H"
+#include "fvDOMPI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

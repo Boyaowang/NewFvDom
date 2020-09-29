@@ -23,12 +23,12 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "greyDiffusiveRadiationMixedFvPatchScalarField.H"
+#include "greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvPatchFieldMapper.H"
 #include "volFields.H"
 
-#include "fvDOM.H"
+#include "fvDOMP.H"
 #include "constants.H"
 
 using namespace Foam::constant;
@@ -36,8 +36,8 @@ using namespace Foam::constant::mathematical;
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::greyDiffusiveRadiationMixedFvPatchScalarField::
-greyDiffusiveRadiationMixedFvPatchScalarField
+Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::
+greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF
@@ -53,10 +53,10 @@ greyDiffusiveRadiationMixedFvPatchScalarField
 }
 
 
-Foam::greyDiffusiveRadiationMixedFvPatchScalarField::
-greyDiffusiveRadiationMixedFvPatchScalarField
+Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::
+greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 (
-    const greyDiffusiveRadiationMixedFvPatchScalarField& ptf,
+    const greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -74,8 +74,8 @@ greyDiffusiveRadiationMixedFvPatchScalarField
 {}
 
 
-Foam::greyDiffusiveRadiationMixedFvPatchScalarField::
-greyDiffusiveRadiationMixedFvPatchScalarField
+Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::
+greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 (
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
@@ -107,10 +107,10 @@ greyDiffusiveRadiationMixedFvPatchScalarField
 }
 
 
-Foam::greyDiffusiveRadiationMixedFvPatchScalarField::
-greyDiffusiveRadiationMixedFvPatchScalarField
+Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::
+greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 (
-    const greyDiffusiveRadiationMixedFvPatchScalarField& ptf
+    const greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP& ptf
 )
 :
     mixedFvPatchScalarField(ptf),
@@ -124,10 +124,10 @@ greyDiffusiveRadiationMixedFvPatchScalarField
 {}
 
 
-Foam::greyDiffusiveRadiationMixedFvPatchScalarField::
-greyDiffusiveRadiationMixedFvPatchScalarField
+Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::
+greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
 (
-    const greyDiffusiveRadiationMixedFvPatchScalarField& ptf,
+    const greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP& ptf,
     const DimensionedField<scalar, volMesh>& iF
 )
 :
@@ -144,7 +144,7 @@ greyDiffusiveRadiationMixedFvPatchScalarField
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::autoMap
+void Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::autoMap
 (
     const fvPatchFieldMapper& m
 )
@@ -154,7 +154,7 @@ void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::autoMap
 }
 
 
-void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::rmap
+void Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::rmap
 (
     const fvPatchScalarField& ptf,
     const labelList& addr
@@ -165,7 +165,7 @@ void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::rmap
 }
 
 
-void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs()
+void Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::updateCoeffs()
 {
     if (this->updated())
     {
@@ -180,8 +180,8 @@ void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs()
     const scalarField& Tp =
         patch().lookupPatchField<volScalarField, scalar>(TName_);
 
-    const radiationModels::fvDOM& dom =
-        db().lookupObject<radiationModels::fvDOM>("radiationProperties");
+    const radiationModels::fvDOMP& dom =
+        db().lookupObject<radiationModels::fvDOMP>("radiationProperties");
 
     label rayId = -1;
     label lambdaId = -1;
@@ -199,8 +199,8 @@ void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs()
     scalarField& Iw = *this;
     const vectorField n(patch().nf());
 
-    radiationModels::radiativeIntensityRay& ray =
-        const_cast<radiationModels::radiativeIntensityRay&>(dom.IRay(rayId));
+    radiationModels::radiativeIntensityRayP& ray =
+        const_cast<radiationModels::radiativeIntensityRayP&>(dom.IRay(rayId));
 
     const scalarField nAve(n & ray.dAve());
 
@@ -258,7 +258,7 @@ void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::updateCoeffs()
 }
 
 
-void Foam::greyDiffusiveRadiationMixedFvPatchScalarField::write
+void Foam::greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP::write
 (
     Ostream& os
 ) const
@@ -276,7 +276,7 @@ namespace Foam
     makePatchTypeField
     (
         fvPatchScalarField,
-        greyDiffusiveRadiationMixedFvPatchScalarField
+        greyDiffusiveRadiationMixedFvPatchScalarFieldFvDOMP
     );
 }
 

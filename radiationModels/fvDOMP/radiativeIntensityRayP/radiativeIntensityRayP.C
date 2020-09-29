@@ -23,14 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "radiativeIntensityRay.H"
+#include "radiativeIntensityRayP.H"
 #include "fvm.H"
-#include "fvDOM.H"
+#include "fvDOMP.H"
 #include "constants.H"
 
 using namespace Foam::constant;
 
-const Foam::word Foam::radiationModels::radiativeIntensityRay::intensityPrefix
+const Foam::word Foam::radiationModels::radiativeIntensityRayP::intensityPrefix
 (
     "ILambda"
 );
@@ -38,9 +38,9 @@ const Foam::word Foam::radiationModels::radiativeIntensityRay::intensityPrefix
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::radiationModels::radiativeIntensityRay::radiativeIntensityRay
+Foam::radiationModels::radiativeIntensityRayP::radiativeIntensityRayP
 (
-    const fvDOM& dom,
+    const fvDOMP& dom,
     const fvMesh& mesh,
     const scalar phi,
     const scalar theta,
@@ -233,13 +233,13 @@ Foam::radiationModels::radiativeIntensityRay::radiativeIntensityRay
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::radiationModels::radiativeIntensityRay::~radiativeIntensityRay()
+Foam::radiationModels::radiativeIntensityRayP::~radiativeIntensityRayP()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::radiationModels::radiativeIntensityRay::correct()
+Foam::scalar Foam::radiationModels::radiativeIntensityRayP::correct()
 {
     // Reset boundary heat flux to zero
     qr_.boundaryFieldRef() = 0.0;
@@ -248,9 +248,25 @@ Foam::scalar Foam::radiationModels::radiativeIntensityRay::correct()
 
     const surfaceScalarField Ji(dAve_ & mesh_.Sf());
 
+    const volScalarField sigmaEffP(dom_.sigmaEff());
+
     forAll(ILambda_, lambdaI)
     {
-        const volScalarField& k = dom_.aLambda(lambdaI);
+    
+// Info<<"outputInfo---sigmaEffP: "<<sigmaEffP<<endl;
+// Info<<"outputInfo---dom_.aLambda("<<lambdaI<<"): "<<dom_.aLambda(lambdaI)<<endl;
+
+    
+// Info<<"outputInfo---dom_.aLambda(lambdaI) + sigmaEffP: "<<dom_.aLambda(lambdaI) + sigmaEffP<<endl;
+    
+        const volScalarField k = dom_.aLambda(lambdaI) + sigmaEffP;
+// Info<<"outputInfo---k: "<<k<<endl;
+// Info<<"outputInfo---absorptionEmission_.aDisp(lambdaI): "<<absorptionEmission_.aDisp(lambdaI)<<endl;
+
+// Info<<"outputInfo---blackBody_.bLambda(lambdaI): "<<blackBody_.bLambda(lambdaI)<<endl;
+// Info<<"outputInfo---(k - absorptionEmission_.aDisp(lambdaI))*blackBody_.bLambda(lambdaI): "<<(k - absorptionEmission_.aDisp(lambdaI))*blackBody_.bLambda(lambdaI)<<endl;
+
+// Info<<"outputInfo---absorptionEmission_.E("<<lambdaI<<"): "<<absorptionEmission_.E(lambdaI)<<endl;
 
         fvScalarMatrix IiEq
         (
@@ -281,7 +297,7 @@ Foam::scalar Foam::radiationModels::radiativeIntensityRay::correct()
 }
 
 
-void Foam::radiationModels::radiativeIntensityRay::addIntensity()
+void Foam::radiationModels::radiativeIntensityRayP::addIntensity()
 {
     I_ = dimensionedScalar(dimMass/pow3(dimTime), 0);
 

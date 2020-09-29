@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "fvDOM.H"
+#include "fvDOMP.H"
 #include "absorptionEmissionModel.H"
 #include "scatterModel.H"
 #include "constants.H"
@@ -39,15 +39,15 @@ namespace Foam
 {
 namespace radiationModels
 {
-    defineTypeNameAndDebug(fvDOM, 0);
-    addToRadiationRunTimeSelectionTables(fvDOM);
+    defineTypeNameAndDebug(fvDOMP, 0);
+    addToRadiationRunTimeSelectionTables(fvDOMP);
 }
 }
 
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
-void Foam::radiationModels::fvDOM::initialise()
+void Foam::radiationModels::fvDOMP::initialise()
 {
     // 3D
     if (mesh_.nSolutionD() == 3)
@@ -66,7 +66,7 @@ void Foam::radiationModels::fvDOM::initialise()
                 IRay_.set
                 (
                     i,
-                    new radiativeIntensityRay
+                    new radiativeIntensityRayP
                     (
                         *this,
                         mesh_,
@@ -99,7 +99,7 @@ void Foam::radiationModels::fvDOM::initialise()
             IRay_.set
             (
                 i,
-                new radiativeIntensityRay
+                new radiativeIntensityRayP
                 (
                     *this,
                     mesh_,
@@ -131,7 +131,7 @@ void Foam::radiationModels::fvDOM::initialise()
             IRay_.set
             (
                 i,
-                new radiativeIntensityRay
+                new radiativeIntensityRayP
                 (
                     *this,
                     mesh_,
@@ -198,7 +198,7 @@ void Foam::radiationModels::fvDOM::initialise()
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::radiationModels::fvDOM::fvDOM(const volScalarField& T)
+Foam::radiationModels::fvDOMP::fvDOMP(const volScalarField& T)
 :
     radiationModel(typeName, T),
     G_
@@ -286,7 +286,7 @@ Foam::radiationModels::fvDOM::fvDOM(const volScalarField& T)
 }
 
 
-Foam::radiationModels::fvDOM::fvDOM
+Foam::radiationModels::fvDOMP::fvDOMP
 (
     const dictionary& dict,
     const volScalarField& T
@@ -380,13 +380,13 @@ Foam::radiationModels::fvDOM::fvDOM
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::radiationModels::fvDOM::~fvDOM()
+Foam::radiationModels::fvDOMP::~fvDOMP()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-bool Foam::radiationModels::fvDOM::read()
+bool Foam::radiationModels::fvDOMP::read()
 {
     if (radiationModel::read())
     {
@@ -406,7 +406,7 @@ bool Foam::radiationModels::fvDOM::read()
 }
 
 
-void Foam::radiationModels::fvDOM::calculate()
+void Foam::radiationModels::fvDOMP::calculate()
 {
     absorptionEmission_->correct(a_, aLambda_);
 
@@ -443,7 +443,7 @@ void Foam::radiationModels::fvDOM::calculate()
 }
 
 
-Foam::tmp<Foam::volScalarField> Foam::radiationModels::fvDOM::Rp() const
+Foam::tmp<Foam::volScalarField> Foam::radiationModels::fvDOMP::Rp() const
 {
     // Construct using contribution from first frequency band
     tmp<volScalarField> tRp
@@ -477,7 +477,7 @@ Foam::tmp<Foam::volScalarField> Foam::radiationModels::fvDOM::Rp() const
 
 
 Foam::tmp<Foam::DimensionedField<Foam::scalar, Foam::volMesh>>
-Foam::radiationModels::fvDOM::Ru() const
+Foam::radiationModels::fvDOMP::Ru() const
 {
     tmp<DimensionedField<scalar, volMesh>> tRu
     (
@@ -520,8 +520,17 @@ Foam::radiationModels::fvDOM::Ru() const
     return tRu;
 }
 
+Foam::tmp<Foam::volScalarField> Foam::radiationModels::fvDOMP::sigmaEff() const
+{
+    return volScalarField::New
+    (
+        "sigmaEff",
+        scatter_->sigmaEff()
+    );
+}
 
-void Foam::radiationModels::fvDOM::updateBlackBodyEmission()
+
+void Foam::radiationModels::fvDOMP::updateBlackBodyEmission()
 {
     for (label j=0; j < nLambda_; j++)
     {
@@ -530,7 +539,7 @@ void Foam::radiationModels::fvDOM::updateBlackBodyEmission()
 }
 
 
-void Foam::radiationModels::fvDOM::updateG()
+void Foam::radiationModels::fvDOMP::updateG()
 {
     G_ = dimensionedScalar("zero",dimMass/pow3(dimTime), 0);
     qr_ = dimensionedScalar("zero",dimMass/pow3(dimTime), 0);
@@ -548,7 +557,7 @@ void Foam::radiationModels::fvDOM::updateG()
 }
 
 
-void Foam::radiationModels::fvDOM::setRayIdLambdaId
+void Foam::radiationModels::fvDOMP::setRayIdLambdaId
 (
     const word& name,
     label& rayId,
@@ -562,6 +571,7 @@ void Foam::radiationModels::fvDOM::setRayIdLambdaId
     rayId = readLabel(IStringStream(name.substr(i1 + 1, i2 - 1))());
     lambdaId = readLabel(IStringStream(name.substr(i2 + 1, name.size() - 1))());
 }
+
 
 
 // ************************************************************************* //

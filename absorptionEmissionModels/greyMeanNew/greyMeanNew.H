@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::radiationModels::absorptionEmission::greyMean
+    Foam::radiationModels::absorptionEmission::greyMeanNew
 
 Description
-    greyMean radiation absorption and emission coefficients for continuous phase
+    greyMeanNew radiation absorption and emission coefficients for continuous phase
 
     The coefficients for the species in the Look up table have to be specified
     for use in moles x P [atm], i.e. (k[i] = species[i]*p*9.869231e-6).
@@ -44,9 +44,9 @@ Description
 
 Example
     \verbatim
-    absorptionEmissionModel greyMean;
+    absorptionEmissionModel greyMeanNew;
 
-    greyMeanCoeffs
+    greyMeanNewCoeffs
     {
         lookUpTableFileName     "speciesTable";
 
@@ -82,12 +82,12 @@ Example
     \endverbatim
 
 SourceFiles
-    greyMean.C
+    greyMeanNew.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef greyMean_H
-#define greyMean_H
+#ifndef greyMeanNew_H
+#define greyMeanNew_H
 
 #include "interpolationLookUpTable.H"
 #include "absorptionEmissionModel.H"
@@ -105,10 +105,10 @@ namespace absorptionEmissionModels
 {
 
 /*---------------------------------------------------------------------------*\
-                          Class greyMean Declaration
+                          Class greyMeanNew Declaration
 \*---------------------------------------------------------------------------*/
 
-class greyMean
+class greyMeanNew
 :
     public absorptionEmissionModel
 {
@@ -149,13 +149,13 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("greyMean");
+    TypeName("greyMeanNew");
 
 
     // Constructors
 
         //- Construct from components
-        greyMean
+        greyMeanNew
         (
             const dictionary& dict,
             const fvMesh& mesh,
@@ -164,7 +164,7 @@ public:
 
 
     //- Destructor
-    virtual ~greyMean();
+    virtual ~greyMeanNew();
 
 
     // Member Functions
@@ -183,6 +183,13 @@ public:
         {
             return true;
         }
+        
+        //- Correct rays
+        void correct
+        (
+            volScalarField& a,
+            PtrList<volScalarField>& aj
+        ) const;
 };
 
 

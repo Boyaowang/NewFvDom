@@ -22,24 +22,18 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::radiationModels::P1
+    Foam::radiationModels::P1P
 
 Description
-    Works well for combustion applications where optical thickness, tau is
-    large, i.e. tau = a*L > 3 (L = distance between objects)
-
-    Assumes
-     - all surfaces are diffuse
-     - tends to over predict radiative fluxes from sources/sinks
-       *** SOURCES NOT CURRENTLY INCLUDED ***
+    Particulate Effects in the P-1 Model
 
 SourceFiles
-    P1.C
+    P1P.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef radiation_P1_H
-#define radiation_P1_H
+#ifndef radiation_P1P_H
+#define radiation_P1P_H
 
 #include "radiationModel.H"
 #include "volFields.H"
@@ -52,10 +46,10 @@ namespace radiationModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class P1 Declaration
+                           Class P1P Declaration
 \*---------------------------------------------------------------------------*/
 
-class P1
+class P1P
 :
     public radiationModel
 {
@@ -75,28 +69,37 @@ class P1
 
         //- Emission contribution
         volScalarField E_;
+        
+        //- Particulate equivalent absorption coefficient
+        volScalarField ap_;
+
+        //- Equivalent emission of the particles (for calculation here Ep is Ep*pi)
+        volScalarField Ep_;
+        
+        //- G equation left terms first one
+        volScalarField GLST1_;
 
 
 public:
 
     //- Runtime type information
-    TypeName("P1");
+    TypeName("P1P");
 
 
     // Constructors
 
         //- Construct from components
-        P1(const volScalarField& T);
+        P1P(const volScalarField& T);
 
         //- Construct from components
-        P1(const dictionary& dict, const volScalarField& T);
+        P1P(const dictionary& dict, const volScalarField& T);
 
         //- Disallow default bitwise copy construction
-        P1(const P1&) = delete;
+        P1P(const P1P&) = delete;
 
 
     //- Destructor
-    virtual ~P1();
+    virtual ~P1P();
 
 
     // Member Functions
@@ -117,12 +120,13 @@ public:
 
             //- Source term component (constant)
             virtual tmp<volScalarField::Internal> Ru() const;
+            
 
 
     // Member Operators
 
         //- Disallow default bitwise assignment
-        void operator=(const P1&) = delete;
+        void operator=(const P1P&) = delete;
 };
 
 
